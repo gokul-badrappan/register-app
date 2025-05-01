@@ -62,9 +62,12 @@ pipeline {
         stage("Prepare Docker Context") {
             steps {
                 script {
+                    // Creating docker-context directory and ensuring the WAR file is copied
                     sh 'mkdir -p docker-context'
+                    sh 'echo "Listing files in webapp/target:" && ls -la webapp/target/'  // Debug: List files in target folder
                     sh 'cp webapp/target/*.war docker-context/app.war'
                     sh 'cp Dockerfile docker-context/'
+                    sh 'echo "Docker context after copying files:" && ls -la docker-context/'  // Debug: List files in docker-context
                 }
             }
         }
