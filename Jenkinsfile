@@ -10,8 +10,7 @@ environment {
             DOCKER_USER = "gokul0880"
             DOCKER_PASS = 'dockerhub'
             IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
-            IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
-	    JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
+            IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}
     }
     stages {
         stage("Cleanup Workspace") {
