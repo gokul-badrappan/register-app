@@ -63,7 +63,7 @@ pipeline {
             steps {
                 script {
                     sh 'mkdir -p docker-context'
-                    sh 'cp target/*.war docker-context/app.war'
+                    sh 'cp webapp/target/*.war docker-context/app.war'
                     sh 'cp Dockerfile docker-context/'
                 }
             }
