@@ -14,6 +14,7 @@ pipeline {
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
         DOCKER_CREDENTIAL_ID = 'dockerhub' // Replace with your DockerHub credential ID
         JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
+        SLACK_WEBHOOK_URL = credentials('slack-webhook')
     }
 
     stages {
@@ -83,6 +84,16 @@ pipeline {
         }
     }
 }
+
+            stage("Slack Notification") {
+            steps {
+                sh """
+                    curl -X POST -H 'Content-type: application/json' \\
+                    --data '{"text":"✅ *Docker Image Pushed Successfully*\\n*Image:* ${IMAGE_NAME}:${IMAGE_TAG}"}' \\
+                    ${SLACK_WEBHOOK_URL}
+                """
+            }
+        }
 
         stage("Trivy Scan") {
             steps {
