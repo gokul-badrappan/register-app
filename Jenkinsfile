@@ -72,17 +72,17 @@ pipeline {
             }
         }
 
-        stage("Build & Push Docker Image") {
-            steps {
-                script {
-                    docker.withRegistry('', DOCKER_CREDENTIAL_ID) {
-                        def dockerImage = docker.build("${IMAGE_NAME}:${IMAGE_TAG}", 'docker-context')
-                        dockerImage.push()
-                        dockerImage.push("latest")
-                    }
-                }
-            }
+        stage('Build & Push Docker Image') {
+    steps {
+        withDockerRegistry(credentialsId: 'dockerhub', url: '') {
+            sh '''
+                cp webapp/target/*.war docker-context/webapp.war
+                docker build -t gokul0880/register-app-pipeline:1.0.0-${BUILD_NUMBER} docker-context
+                docker push gokul0880/register-app-pipeline:1.0.0-${BUILD_NUMBER}
+            '''
         }
+    }
+}
 
         stage("Trivy Scan") {
             steps {
