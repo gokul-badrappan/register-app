@@ -109,12 +109,15 @@ pipeline {
         }
 
         stage("Trigger CD Pipeline") {
-            steps {
-                script {
-                    def cd_url = "http://ec2-13-202-21-200.ap-south-1.compute.amazonaws.com:8080/job/gitops-register-app-cd/buildWithParameters"
-                    sh "curl -v -k --user clouduser:${JENKINS_API_TOKEN} -X POST -H 'cache-control: no-cache' -H 'content-type: application/x-www-form-urlencoded' --data-urlencode IMAGE_TAG=${IMAGE_TAG} ${cd_url}?token=gitops-token"
-                }
-            }
+    steps {
+        script {
+            def cd_url = "http://ec2-13-202-21-200.ap-south-1.compute.amazonaws.com:8080/job/gitops-register-app-cd/buildWithParameters"
+            sh """
+                curl -v -k --user clouduser:${JENKINS_API_TOKEN} -X POST -H 'Content-type: application/x-www-form-urlencoded' \
+                --data-urlencode "IMAGE_TAG=${IMAGE_TAG}" ${cd_url}?token=gitops-token
+            """
         }
+    }
+}
     }
 }
